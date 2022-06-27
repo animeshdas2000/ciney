@@ -8,8 +8,5 @@ type Data = {
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
-) {
-  console.log(connect());
-  res.status(200).json({ name: "John Doe" });
-}
+) {}
 

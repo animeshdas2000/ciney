@@ -1,12 +1,16 @@
 import mongoose from "mongoose";
 
 const seatSchema = new mongoose.Schema({
-  id: {
+  // id: {
+  //   type: String,
+  //   required: true,
+  // },
+  seat_num: {
     type: String,
     required: true,
   },
-  seat_num: {
-    type: String,
+  isBooked: {
+    type: Boolean,
     required: true,
   },
 });
