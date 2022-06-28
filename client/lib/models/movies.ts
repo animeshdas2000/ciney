@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 // OUR TODO SCHEMA
 const MoviesSchema = new mongoose.Schema({
+  movie_id: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -9,6 +13,18 @@ const MoviesSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  seats: [
+    {
+      seat_num: {
+        type: String,
+        required: true,
+      },
+      isBooked: {
+        type: Boolean,
+        default: false,
+      },
+    },
+  ],
 });
 
 // OUR TODO MODEL

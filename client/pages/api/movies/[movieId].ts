@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connect } from "../../../lib/db";
 import { Movies } from "../../../lib/models/movies";
-
+import seat from "../seat";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -11,5 +11,11 @@ export default async function handler(
   const movie = await Movies.findById(movieId).catch((err: Error) => {
     res.json(err);
   });
-  res.json(movie);
+  if (movie.seats.length === 0) {
+    res.json("Booking Unavailable");
+  } else {
+    res.json(movie);
+  }
+  // res.json(movie);
+  res.end();
 }

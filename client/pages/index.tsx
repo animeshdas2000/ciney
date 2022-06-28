@@ -9,36 +9,23 @@ import axios from "axios";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Home: NextPage = () => {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-  const [movies, setMovies] = useState([]);
-  useEffect(() => {
-    if (!socket) {
-      socket = io("http://localhost:5000");
-    }
-  }, []);
-  useEffect(() => {
-    socket.on("chat", (msg) => {
-      setMessages([...messages, msg]);
-    });
-  }, [messages]);
-  const sendMessage = () => {
-    socket.emit("chat", input);
-    setInput("");
-  };
+  // const [messages, setMessages] = useState([]);
+  // const [input, setInput] = useState("");
 
-  useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        const res = await axios.get(`http://localhost:3000/api/movies`);
-        setMovies(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchMovie();
-  }, []);
+  // useEffect(() => {
+  //   if (!socket) {
+  //     socket = io("http://localhost:5000");
+  //   }
+  // }, []);
+  // useEffect(() => {
+  //   socket.on("chat", (msg) => {
+  //     setMessages([...messages, msg]);
+  //   });
+  // }, [messages]);
+  // const sendMessage = () => {
+  //   socket.emit("chat", input);
+  //   setInput("");
+  // };
 
   return (
     <div className={styles.container}>
@@ -51,27 +38,17 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <h1 className="text-4xl">Welcome to Ciney!</h1>
         <h2>Booking starts soon!🎫</h2>
-        <input
+        {/* <input
           placeholder="message"
           onChange={(e) => setInput(e.target.value)}
           value={input}
         />
         <button onClick={sendMessage}>send</button>
-        <div id="messages">
-          {messages.map((msg) => (
+        <div id="messages"> */}
+        {/* {messages.map((msg) => (
             <div className="message">{msg}</div>
           ))}
-        </div>
-
-        {movies.map((val, key) => {
-          return (
-            <div key={key}>
-              <p>{val.name}</p>
-              <p>{val.duration}</p>
-              <hr />
-            </div>
-          );
-        })}
+        </div> */}
       </main>
 
       <footer className={styles.footer}>

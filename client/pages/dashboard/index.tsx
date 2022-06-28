@@ -2,19 +2,9 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import { css } from "@emotion/react";
+import axios from "axios";
 function Dashboard() {
-  // useEffect(() => {
-
-  // }, []);
-  // const [col, setCol] = useState<number | null>(0);
-  // let col = 26;
-  // let row = 100;
-  // let arr = [];
-  // for (let j = 0; j <= row; j++) {
-  //   for (let i = 65; i < 91; i++) {
-  //     arr.push(`${String.fromCharCode(i)}${j}`);
-  //   }
-  // }
+  const [movies, setMovies] = useState([]);
 
   let arr = new Array(26).fill(1);
   return (
