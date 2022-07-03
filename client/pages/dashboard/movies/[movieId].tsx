@@ -17,7 +17,7 @@ function Movie() {
   const [connected, setConnected] = useState(false);
   const [msg, setMsg] = useState("");
   const [selectedSeats, setSelectedSeats] = useState<any[]>([]); //define type
-  const [recievedSeats, setRecievedSeats] = useState([]);
+  const [recievedSeats, setRecievedSeats] = useState<any[]>([]);
   const router = useRouter();
   const { movieId } = router.query;
   let arrSend: any[] = [];
@@ -33,7 +33,6 @@ function Movie() {
       setSeats(res.data.seats);
       setRoom(res.data.movie_id);
       socket.emit("join_movie_queue", res.data.movie_id);
-      console.log(room);
     } catch (error) {
       console.log(error);
     }
@@ -45,24 +44,12 @@ function Movie() {
   useEffect(() => {
     socket;
 
-    // function cleanup() {
-    //   socket.disconnect();
-    // }
-    // return cleanup;
-    socket.on("new-remote-operations", (seats: string) => {
-      // console.log(JSON.parse(seats));
-
-      // setRecievedSeats((recievedSeats) => [...recievedSeats, seats]);
-      arrRec.push(...recievedSeats, seats);
+    socket.on("new-remote-operations", (seat: string) => {
+      arrRec.push(...recievedSeats, seat);
       setRecievedSeats(arrRec);
-      // setSelectedSeats(arrRec);
     });
   }, []);
   console.log(recievedSeats);
-  // console.log(arrRec);
-  // useEffect(() => {
-  //   console.log(recievedSeats);
-  // }, [recievedSeats]);
 
   // useEffect(() => {
 
@@ -114,20 +101,26 @@ function Movie() {
                 css={css`
                   margin: 10px;
                 `}
-                key={seatId}
+                key={seat.seat_num}
                 onClick={
                   () => {
                     socket.emit("new-operations", seat.seat_num);
+                    arrSend.push(...arrSend, seat.seat_num);
+                    setSelectedSeats(arrSend);
                   } //send data
                   // setSelectedSeats((addedSeats) => [
                   //   ...addedSeats,
                   //   seat.seat_num,
                   // ])
                 }>
-                {seat.isBooked ? (
-                  <input type="checkbox" disabled />
+                {selectedSeats.includes(seat.num) ? (
+                  <p>{seat.seat_num}</p>
+                ) : recievedSeats.includes(seat.seat_num) ? (
+                  <p className="text-red-600 bg-slate-300">{seat.seat_num}</p>
+                ) : seat.isBooked ? (
+                  <p className="text-gray-700 bg-slate-300">{seat.seat_num}</p>
                 ) : (
-                  <input type="checkbox" />
+                  <p className="text-green-600 bg-slate-300">{seat.seat_num}</p>
                 )}
               </div>
             );
@@ -140,3 +133,12 @@ function Movie() {
 }
 
 export default Movie;
+// () => {
+//   if (recievedSeats.includes(seat.seat_num)) {
+//     return <p>Blocked</p>;
+//   } else if (seat.isBooked) {
+//     return <p style={{ color: "red" }}>{seat.seat_num}</p>;
+//   } else {
+//     <p style={{ color: "Green" }}>{seat.seat_num}</p>;
+//   }
+// }
