@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { EventSeat, EventSeatOutlined } from "@mui/icons-material";
+
+import Movie from "./[movieId]";
+import { Keyboard } from "@mui/icons-material";
+import Link from "next/link";
 function Movies() {
   const [movies, setMovies] = useState<any[]>([]);
   useEffect(() => {
-    const fetchMovie = async () => {
+    const fetchMovies = async () => {
       try {
         const res = await axios.get(`http://localhost:3000/api/movies`);
         console.log(res.data);
@@ -14,7 +17,7 @@ function Movies() {
       }
     };
 
-    fetchMovie();
+    fetchMovies();
   }, []);
   return (
     <div>
@@ -24,16 +27,7 @@ function Movies() {
             <p>{val.name}</p>
             <p>{val.duration}</p>
             <p>{val.movie_id}</p>
-            <div className="flex flex-row flex-wrap">
-              {val.seats?.map((seat: any, seatId: any) => {
-                return (
-                  <p key={seatId}>
-                    {seat.seat_num}
-                    {seat.isBooked ? <EventSeat /> : <EventSeatOutlined />}
-                  </p>
-                );
-              })}
-            </div>
+            <Link href={`/dashboard/movies/${val._id}`}>Book tickets</Link>
             <hr />
           </div>
         );

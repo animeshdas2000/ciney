@@ -44,8 +44,8 @@ const Home: NextPage = () => {
           value={input}
         />
         <button onClick={sendMessage}>send</button>
-        <div id="messages"> */}
-        {/* {messages.map((msg) => (
+        <div id="messages">
+          {messages.map((msg) => (
             <div className="message">{msg}</div>
           ))}
         </div> */}
