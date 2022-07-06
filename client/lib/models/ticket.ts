@@ -11,6 +11,11 @@ const ticketSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    movie: {
+      type: ObjectId,
+      ref: "movies",
+      required: true,
+    },
     seat: {
       type: ObjectId,
       ref: "Seat",
@@ -26,4 +31,4 @@ const ticketSchema = new mongoose.Schema(
 );
 
 export const Ticket =
-  mongoose.models.Ticket || mongoose.model("Ticket", ticketSchema);
+  mongoose.models.Tickets || mongoose.model("Tickets", ticketSchema);

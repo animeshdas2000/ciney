@@ -32,6 +32,7 @@ export default async function handler(
           res.json(err);
         });
         res.json(postMovies);
+        res.end();
       }
       break;
     default:

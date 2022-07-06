@@ -2,31 +2,8 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import io, { Socket } from "socket.io-client";
-import { DefaultEventsMap } from "@socket.io/component-emitter";
-import axios from "axios";
-
-let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Home: NextPage = () => {
-  // const [messages, setMessages] = useState([]);
-  // const [input, setInput] = useState("");
-
-  // useEffect(() => {
-  //   if (!socket) {
-  //     socket = io("http://localhost:5000");
-  //   }
-  // }, []);
-  // useEffect(() => {
-  //   socket.on("chat", (msg) => {
-  //     setMessages([...messages, msg]);
-  //   });
-  // }, [messages]);
-  // const sendMessage = () => {
-  //   socket.emit("chat", input);
-  //   setInput("");
-  // };
-
   return (
     <div className={styles.container}>
       <Head>
@@ -38,24 +15,7 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <h1 className="text-4xl">Welcome to Ciney!</h1>
         <h2>Booking starts soon!🎫</h2>
-        {/* <input
-          placeholder="message"
-          onChange={(e) => setInput(e.target.value)}
-          value={input}
-        />
-        <button onClick={sendMessage}>send</button>
-        <div id="messages">
-          {messages.map((msg) => (
-            <div className="message">{msg}</div>
-          ))}
-        </div> */}
       </main>
-
-      <footer className={styles.footer}>
-        <a href="/" target="_blank" rel="noopener noreferrer">
-          Powered by <span className={styles.logo}>Ciney</span>
-        </a>
-      </footer>
     </div>
   );
 };

@@ -22,24 +22,57 @@ server.listen(5000, () => {
   console.log("listening on port 5000");
 });
 
-let room;
+const roomToReservation = {}; //room => Set [{room, seatId, state}]
+const clientIdToReservation = {}; //clientId => Set [{room, seatId, state}]
+
+function clearClientReservation(socket) {
+  if (clientIdToReservation[socket.id] === undefined) return;
+  for (const params of clientIdToReservation[socket.id].values()) {
+    if (roomToReservation[params.room] !== undefined)
+      roomToReservation[params.room].delete(params);
+    socket.broadcast
+      .to(params.room)
+      .emit("temp-book-seat", { ...params, state: false });
+  }
+  delete clientIdToReservation[socket.id];
+}
+
 io.on("connection", (socket) => {
   // console.log("What socket", socket);
   console.log(`User Connected: ${socket.id}`);
-  socket.on("join_movie_queue", (data) => {
-    console.log(`${socket.id} joined ${data}`);
-    socket.join(data);
-    room = data;
-    socket.on("new-operations", (data) => {
-      io.to(room).emit("new-remote-operations", data);
-      console.log(data);
-    });
+  socket.on("join_movie_queue", (room) => {
+    console.log(`${socket.id} joined ${room}`);
+    socket.join(room);
+    if (roomToReservation[room] === undefined) return;
+    for (const seat of roomToReservation[room].values()) {
+      socket.emit("block-seats", seat);
+    }
+  });
+  socket.on("block-seats", (params) => {
+    if (params.state) {
+      (roomToReservation[params.room] =
+        roomToReservation[params.room] || new Set()).add(params);
+      (clientIdToReservation[socket.id] =
+        clientIdToReservation[socket.id] || new Set()).add(params);
+    } else {
+      if (roomToReservation[params.room] !== undefined)
+        roomToReservation[params.room].delete(params);
+      if (clientIdToReservation[socket.id !== undefined])
+        clientIdToReservation[socket.id].delete(params);
+    }
+    socket.to(params.room).emit("recieve-blocked-seats", params);
+    console.log(JSON.stringify(params));
   });
   // socket.on("send_blocked_seats", (data) => {
   //   socket.to(data.room).emit("blocked_seats", data);
   // });
 
+  socket.on("leave-room", (room) => {
+    socket.leave(room);
+    clearClientReservation(socket);
+  });
   socket.on("disconnect", () => {
     console.log(`User Disconnected : ${socket.id}`);
+    clearClientReservation(socket);
   });
 });
