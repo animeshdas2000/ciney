@@ -19,18 +19,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       break;
     case "POST":
       {
-        const { id, name, movie } = req.body;
+        const { id, name, movie, seats } = req.body;
 
         // const seat_id = "62b8bbc05ce851d229541dd8";
-        const seat_id = "62b97c3138960e083c7a3b4e";
-        const seat_obj = await Seat.findById(seat_id).catch(catcher);
+        //const seat_id = "62b97c3138960e083c7a3b4e";
+        //const seat_obj = await Seat.findById(seat_id).catch(catcher);
         // console.log(seat_obj);
         const newBooking = await new Ticket({
           id,
           name,
           movie,
-          seat: seat_obj,
+          seats,
         });
+
         res.json(await Ticket.create(newBooking).catch(catcher));
       }
       break;
