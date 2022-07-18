@@ -8,8 +8,15 @@ export default async function handler(
 ) {
   const { bookingId } = req.query;
   await connect();
-  const booking = await Ticket.findById(bookingId).catch((err: Error) => {
-    res.json(err);
-  });
-  res.json(booking);
+  switch (req.method) {
+    case "GET":
+      const booking = await Ticket.findById(bookingId).catch((err: Error) => {
+        res.json(err);
+      });
+      res.json(booking);
+      break;
+    default:
+      break;
+  }
+  res.end();
 }

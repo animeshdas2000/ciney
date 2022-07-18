@@ -68,15 +68,14 @@ function Movie() {
       try {
         const res = await axios.post(`/api/booking`, {
           id: "Testing",
-          name: "userName",
+          name: "Test Name",
           movie: movieId,
           seats: selected,
         });
-        console.log(res);
+        await router.push(`/ticket/${res.data._id}`);
       } catch (err) {
         console.log(err);
       }
-      router.push(`/`);
     } else {
       console.log("Please select seats");
     }
