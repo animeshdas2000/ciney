@@ -14,11 +14,10 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className="text-4xl">Welcome to Ciney!</h1>
-        <h2>Booking starts soon!🎫</h2>
+        <h2>Book you tickets Now!🎫</h2>
       </main>
     </div>
   );
 };
 
 export default Home;
-

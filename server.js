@@ -30,9 +30,7 @@ function clearClientReservation(socket) {
   for (const params of clientIdToReservation[socket.id].values()) {
     if (roomToReservation[params.room] !== undefined)
       roomToReservation[params.room].delete(params);
-    socket.broadcast
-      .to(params.room)
-      .emit("temp-book-seat", { ...params, state: false });
+    socket.to(params.room).emit("temp-book-seat", { ...params, state: false });
   }
   delete clientIdToReservation[socket.id];
 }
@@ -45,10 +43,10 @@ io.on("connection", (socket) => {
     socket.join(room);
     if (roomToReservation[room] === undefined) return;
     for (const seat of roomToReservation[room].values()) {
-      socket.emit("block-seats", seat);
+      socket.emit("temp-book-seat", seat);
     }
   });
-  socket.on("block-seats", (params) => {
+  socket.on("temp-book-seat", (params) => {
     if (params.state) {
       (roomToReservation[params.room] =
         roomToReservation[params.room] || new Set()).add(params);
@@ -60,8 +58,10 @@ io.on("connection", (socket) => {
       if (clientIdToReservation[socket.id !== undefined])
         clientIdToReservation[socket.id].delete(params);
     }
-    socket.to(params.room).emit("recieve-blocked-seats", params);
+    socket.to(params.room).emit("temp-book-seat", params);
     console.log(JSON.stringify(params));
+    // console.log(roomToReservation, "Room");
+    // console.log(clientIdToReservation, "ClientID");
   });
   // socket.on("send_blocked_seats", (data) => {
   //   socket.to(data.room).emit("blocked_seats", data);
@@ -69,6 +69,7 @@ io.on("connection", (socket) => {
 
   socket.on("leave-room", (room) => {
     socket.leave(room);
+    console.log("Left Room", socket);
     clearClientReservation(socket);
   });
   socket.on("disconnect", () => {

@@ -7,7 +7,7 @@ function Admin() {
   let id = "62ba79c05fda8f9048ba3b1a";
   const handleSubmit = async () => {
     try {
-      const res = await axios.post(`http://localhost:3000/api/seat`, {
+      const res = await axios.post(`/api/seat`, {
         row,
         id,
       });
@@ -23,8 +23,8 @@ function Admin() {
       <p>{something}</p>
       <input
         type="number"
-        onChange={(e) => {
-          setRow(e.target.value);
+        onChange={(e: any) => {
+          setRow(e.target.value as number);
         }}
         className="border border-black"
       />

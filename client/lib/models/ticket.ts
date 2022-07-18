@@ -12,15 +12,31 @@ const ticketSchema = new mongoose.Schema(
       required: true,
     },
     movie: {
+      // type: String,
       type: ObjectId,
       ref: "movies",
       required: true,
     },
-    seat: {
-      type: ObjectId,
-      ref: "Seat",
-      required: true,
-    },
+    seats: [
+      {
+        row: {
+          type: String,
+          required: true,
+        },
+        col: {
+          type: Number,
+          required: true,
+        },
+        isBooked: {
+          type: String,
+          required: true,
+        },
+        _id: {
+          type: ObjectId,
+          required: true,
+        },
+      },
+    ],
     time: {
       type: Date,
     },
