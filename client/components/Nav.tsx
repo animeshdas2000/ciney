@@ -6,25 +6,11 @@ import { css } from "@emotion/react";
 function NavBar() {
   return (
     <>
-      <Navbar fluid={true} rounded={true}>
-        <Navbar.Brand>
-          <Link href="/">
-            <span
-              css={css`
-                cursor: pointer;
-              `}
-              className="self-center whitespace-nowrap text-xl font-bold dark:text-white">
-              Ciney.
-            </span>
-          </Link>
-        </Navbar.Brand>
-        <Navbar.Toggle />
-        <Navbar.Collapse>
-          <Navbar.Link href="/">Home</Navbar.Link>
-          <Navbar.Link href="/dashboard">Dashboard</Navbar.Link>
-          <Navbar.Link href="/dashboard/movies">Movies</Navbar.Link>
-        </Navbar.Collapse>
-      </Navbar>
+      <div className="text-center flex justify-evenly max-w-xl content-center mx-auto py-8 ">
+        <Link href="/">Home</Link>
+        <Link href="/dashboard">Dashboard</Link>
+        <Link href="/dashboard/movies">Movies</Link>
+      </div>
     </>
   );
 }

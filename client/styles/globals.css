@@ -6,7 +6,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: "Work Sans", sans-serif;
+  font-family: Gilroy, sans-serif;
+  background-color: #121212;
 }
 
 a {

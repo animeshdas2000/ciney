@@ -9,9 +9,11 @@ interface Props {
 export default function Layout({ children }: Props) {
   return (
     <>
-      <NavBar />
-      <main>{children}</main>
-      <Footer />
+      <div className="bg-[#121212] text-[#ffffff]">
+        <NavBar />
+        <main>{children}</main>
+        <Footer />
+      </div>
     </>
   );
 }
