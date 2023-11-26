@@ -1,58 +1,57 @@
-import { css } from "@emotion/react";
-import axios from "axios";
-import { STATES } from "mongoose";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import axios from "axios"
+import { STATES } from "mongoose"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
+import { io } from "socket.io-client"
 
-const SOCKET_LINK = process.env.SOCKET_SERVER;
-const socket = io(SOCKET_LINK || "https://frozen-thicket-24029.herokuapp.com/");
+const SOCKET_LINK = process.env.SOCKET_SERVER
+const socket = io(SOCKET_LINK || "https://frozen-thicket-24029.herokuapp.com/")
 
 function Movie() {
-  const router = useRouter();
-  const { movieId } = router.query;
+  const router = useRouter()
+  const { movieId } = router.query
   //const [userName, setUserName] = useState<string>("");
-  const [movieName, setMovieName] = useState("");
-  const [movieduration, setMovieDuration] = useState(0);
-  const [movie_id, setMovie_id] = useState("");
-  const [selected, setSelected] = useState<any[]>([]);
-  const [seats, setSeats] = useState<any[]>([]);
+  const [movieName, setMovieName] = useState("")
+  const [movieduration, setMovieDuration] = useState(0)
+  const [movie_id, setMovie_id] = useState("")
+  const [selected, setSelected] = useState<any[]>([])
+  const [seats, setSeats] = useState<any[]>([])
 
   const fetchMovie = async () => {
     try {
-      const res = await axios.get(`/api/movies/${movieId}`);
-      setMovieName(res.data.name);
-      setMovieDuration(res.data.duration);
-      setSeats(res.data.seats);
-      setMovie_id(res.data.movie_id);
+      const res = await axios.get(`/api/movies/${movieId}`)
+      setMovieName(res.data.name)
+      setMovieDuration(res.data.duration)
+      setSeats(res.data.seats)
+      setMovie_id(res.data.movie_id)
 
-      socket.emit("join_movie_queue", res.data.movie_id);
+      socket.emit("join_movie_queue", res.data.movie_id)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   useEffect(() => {
     if (movieId !== undefined) {
-      fetchMovie();
+      fetchMovie()
     }
     // return () => {
     //   socket.emit("leave-room", movie_id);
     //   // socket.emit("disconnect");
     // };
-  }, [movieId]);
+  }, [movieId])
 
   useEffect(() => {
-    socket.on("temp-book-seat", tempBook);
-  }, []);
+    socket.on("temp-book-seat", tempBook)
+  }, [])
 
   const addToOrder = (seat: any) => {
-    if (seat.isBooked) return;
+    if (seat.isBooked) return
     if (!seat.isBooked) {
-      seat.isBooked = "isSelected";
-      blockSeat(seat, false);
-      setSelected((state) => [...state, seat]);
-      return;
+      seat.isBooked = "isSelected"
+      blockSeat(seat, false)
+      setSelected((state) => [...state, seat])
+      return
     }
     // if (seat.isBooked === "isSelected") {
     //   seat.isBooked = false;
@@ -60,30 +59,30 @@ function Movie() {
     //   setSeats((state) => [...state, seat]);
     //   return;
     // }
-    seat.isBooked = "isSelected";
-    blockSeat(seat, true);
-  };
+    seat.isBooked = "isSelected"
+    blockSeat(seat, true)
+  }
 
   const placeOrder = async () => {
     if (selected.length > 0) {
-      selected.map((seat) => (seat.isBooked = true));
+      selected.map((seat) => (seat.isBooked = true))
       try {
         const res = await axios.post(`/api/booking`, {
           id: "Testing",
           name: "Test Name",
           movie: movieId,
           seats: selected,
-        });
-        await router.push(`/ticket/${res.data._id}`);
+        })
+        await router.push(`/ticket/${res.data._id}`)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
     } else {
-      console.log("Please select seats");
+      console.log("Please select seats")
     }
 
     //console.log("Order placing");
-  };
+  }
 
   const blockSeat = (seat: any, state: boolean) => {
     //console.log("Sending blocked seats", seat);
@@ -94,22 +93,22 @@ function Movie() {
       isBooked: "isBlocked",
       _id: `${seat._id}`,
       state: state,
-    });
+    })
     //socket.on("temp-book-seat", tempBook);
-  };
+  }
   //console.log("Before exe", seats);
   const tempBook = (params: any) => {
     //console.log("TempBook running", params);
-    delete params.state;
-    delete params.room;
+    delete params.state
+    delete params.room
     //const seat = seats.find(el => el._id === params._id);
-    setSeats((state) => [...state, params]);
-  };
+    setSeats((state) => [...state, params])
+  }
   // console.log("After", seats);
-  seats.sort();
+  seats.sort()
   let uniqueObjArray = [
     ...new Map(seats.map((item) => [item["_id"], item])).values(),
-  ];
+  ]
   //console.log(selected);
   return (
     <>
@@ -123,7 +122,8 @@ function Movie() {
               ? "bg-gray-400 rounded-lg px-4 py-2 font-bold text-gray-700"
               : "bg-blue-800 rounded-lg px-4 py-2 font-bold text-white"
           }
-          onClick={placeOrder}>
+          onClick={placeOrder}
+        >
           Book {selected.length} tickets
         </button>
         {/* 
@@ -152,17 +152,18 @@ function Movie() {
                     : "bg-gray-200"
                 }`}
                 onClick={() => {
-                  addToOrder(seat);
-                }}>
+                  addToOrder(seat)
+                }}
+              >
                 {seat.row}
                 {seat.col}
               </span>
-            );
+            )
           })}
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default Movie;
+export default Movie

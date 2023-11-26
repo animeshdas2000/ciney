@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { css } from "@emotion/react";
-import axios from "axios";
+import React, { useEffect, useState } from "react"
+import { useRouter } from "next/router"
+import axios from "axios"
 
 function Ticket() {
-  const router = useRouter();
-  const { id } = router.query;
-  const [ticketData, setTicketData] = useState<any>("");
+  const router = useRouter()
+  const { id } = router.query
+  const [ticketData, setTicketData] = useState<any>("")
   const fetchTicket = async () => {
     try {
-      const res = await axios.get(`/api/booking/${id}`);
-      console.log(res.data);
-      setTicketData(res.data);
+      const res = await axios.get(`/api/booking/${id}`)
+      console.log(res.data)
+      setTicketData(res.data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
   useEffect(() => {
     if (id !== undefined) {
-      fetchTicket();
+      fetchTicket()
     }
-  }, [id]);
+  }, [id])
   return (
     <div className=" flex flex-col items-center">
       <h1 className="text-2xl text-center font-bold text-indigo-900">
@@ -38,12 +37,12 @@ function Ticket() {
               <li key={key}>
                 {val.row}-{val.col}
               </li>
-            );
+            )
           })}
         </ul>
       </div>
     </div>
-  );
+  )
 }
 
-export default Ticket;
+export default Ticket
