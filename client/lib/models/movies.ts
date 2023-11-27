@@ -1,5 +1,19 @@
 import mongoose from "mongoose";
 // OUR TODO SCHEMA
+interface IMovie {
+  movie_id:string,
+  name:string,
+  duration: number,
+  seats: ISeats[],
+}
+
+interface ISeats{
+  row: string | number,
+  col: string | number,
+  isBooked: boolean
+
+}
+
 const MoviesSchema = new mongoose.Schema({
   movie_id: {
     type: String,
@@ -16,11 +30,11 @@ const MoviesSchema = new mongoose.Schema({
   seats: [
     {
       row: {
-        type: String,
+        type: String || Number,
         required: true,
       },
       col: {
-        type: Number,
+        type: String || Number,
         required: true,
       },
       isBooked: {

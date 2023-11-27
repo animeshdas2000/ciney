@@ -1,10 +1,15 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import screen from "../public/screen.svg";
-import Image from "next/image";
-import seat_lg from "../public/seats-lg.svg";
+import type { NextPage } from "next"
+import Head from "next/head"
+import styles from "../styles/Home.module.css"
+import screen from "../public/screen.svg"
+import Image from "next/image"
+import seat_lg from "../public/seats-lg.svg"
+import { trpc } from "../utils/trpc"
 const Home: NextPage = () => {
+  const hello = trpc.hello.useQuery({ text: "client" })
+  if (!hello.data) {
+    return <>Loading...</>
+  }
   return (
     <div>
       <Head>
@@ -15,12 +20,13 @@ const Home: NextPage = () => {
       <div className="container mx-auto">
         <main className={styles.main}>
           <h1 className="text-[7rem] pt-2 font-extrabold">Ciney</h1>
+          <p>{hello.data.greeting}</p>
           <Image src={screen} alt="Ciney" />
           <Image src={seat_lg} alt="seat" width={700} height={100} />
         </main>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
