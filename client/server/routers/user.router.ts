@@ -1,42 +1,43 @@
-import {z} from "zod"
-import userModel from "../../lib/models/user.model"
-import {procedure,router} from "../trpc"
+import { z } from "zod"
+import userModel, { IUser } from "../../lib/models/user.model"
+import { procedure, router } from "../trpc"
 
 const userRouter = router({
-    status:procedure.input(z.object({
-        text: z.string(),
-    })).query(({input})=>{
-        return {
-            status: `Working ${input.text}`
-        }
-    }),
-    setData: procedure
-    .input(z.object({
-    text: z.string(),
-    }))
-    .query(async({input,ctx})=>{
-        const userModelData = await userModel().create({
-            name:"Test",
-            email:"test@email.com"
-        });
-        return{
-            greeting: userModelData
-        }
-    })
+  setUser: procedure
+    .input(
+      z.object({
+        name: z.string(),
+        email: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const userModelData = await userModel().create({
+        name: input.name,
+        email: input.email,
+        avatar: "https://hello.img",
+      })
 
-    // setData: procedure
-    //     .input(z.object({
-    //     text: z.string(),
-    //     }))
-    //     .query(async({input,ctx})=>{
-    //         const userModelData = await userModel().create({
-    //             name:"Test",
-    //             email:"test@email.com"
-    //         });
-    //         return{
-    //             greeting: userModelData
-    //         }
-    //     })
+      return {
+        success: true,
+        message: "User Created Successfully",
+      }
+    }),
+
+  getUser: procedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const userModelData = await userModel().findById({
+        _id: input.id,
+      })
+      return {
+        success: true,
+        userData: userModelData as IUser,
+      }
+    }),
 })
 
 export default userRouter

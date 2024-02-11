@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react"
 import { io } from "socket.io-client"
 
 const SOCKET_LINK = process.env.SOCKET_SERVER
-const socket = io(SOCKET_LINK || "https://frozen-thicket-24029.herokuapp.com/")
+//const socket = io(SOCKET_LINK || "https://frozen-thicket-24029.herokuapp.com/")
 
 function Movie() {
   const router = useRouter()
@@ -25,7 +25,7 @@ function Movie() {
       setSeats(res.data.seats)
       setMovie_id(res.data.movie_id)
 
-      socket.emit("join_movie_queue", res.data.movie_id)
+      //socket.emit("join_movie_queue", res.data.movie_id)
     } catch (error) {
       console.log(error)
     }
@@ -42,7 +42,7 @@ function Movie() {
   }, [movieId])
 
   useEffect(() => {
-    socket.on("temp-book-seat", tempBook)
+    //socket.on("temp-book-seat", tempBook)
   }, [])
 
   const addToOrder = (seat: any) => {
@@ -86,14 +86,14 @@ function Movie() {
 
   const blockSeat = (seat: any, state: boolean) => {
     //console.log("Sending blocked seats", seat);
-    socket.emit("temp-book-seat", {
-      row: seat.row,
-      col: seat.col,
-      room: movie_id,
-      isBooked: "isBlocked",
-      _id: `${seat._id}`,
-      state: state,
-    })
+    // socket.emit("temp-book-seat", {
+    //   row: seat.row,
+    //   col: seat.col,
+    //   room: movie_id,
+    //   isBooked: "isBlocked",
+    //   _id: `${seat._id}`,
+    //   state: state,
+    // })
     //socket.on("temp-book-seat", tempBook);
   }
   //console.log("Before exe", seats);

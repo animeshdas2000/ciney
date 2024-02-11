@@ -1,6 +1,6 @@
-import mongose, { model, Schema } from "mongoose"
+import { Model, model, models, Schema } from "mongoose"
 
-interface IUser {
+export interface IUser {
   name: string
   email: string
   avatar?: string
@@ -21,10 +21,7 @@ const userSchema = new Schema<IUser>({
 })
 
 const userModel = () => {
-  return mongose.models && mongose.models.User
-    ? mongose.models.User
-    : model<IUser>("User", userSchema)
+  return (models.User as Model<IUser>) || model("User", userSchema)
 }
 
 export default userModel
-

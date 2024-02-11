@@ -1,39 +1,51 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Link from "next/link"
+import { IMovie } from "../../../lib/models/movies"
+import { trpc } from "../../../utils/trpc"
+import { movie } from "../../admin"
+import Image from "next/image"
 function Movies() {
-  const [movies, setMovies] = useState<any[]>([])
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const res = await axios.get(`/api/movies`)
-        console.log(res.data)
-        setMovies(res.data)
-      } catch (error) {
-        console.log(error)
-      }
+  const { data, isError, isSuccess } = trpc.movies.getMovies.useInfiniteQuery(
+    {
+      limit: 10,
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
     }
+  )
+  console.log(data?.pages[0]?.data)
 
-    fetchMovies()
-  }, [])
   return (
-    <div className="flex justify-evenly flex-wrap;">
-      {movies.map((val, key) => {
-        return (
-          <div
-            className="flex w-80 text-center flex-col items-center bg-[#001242] text-white flex-wrap m-16 p-16 rounded-[2rem]"
-            key={key}
-          >
-            <h1 className="text-3xl font-bold">{val.name}</h1>
-            <span>{val.duration} mintues</span>
-            <Link href={`/dashboard/movies/${val._id}`}>
-              <button className="p-4 m-3 max-w-fit rounded-2xl text-white font-semibold bg-blue-500 shadow-slate-800">
-                Book Tickets
-              </button>
-            </Link>
-          </div>
-        )
-      })}
+    <div className="container mx-auto">
+      <div className=" bg-gray-400/10 w-full h-80 rounded-xl"></div>
+      <h2 className="text-2xl font-bold my-4">Trending this week</h2>
+      <div className="flex flex-row flex-wrap space-x-8">
+        {isSuccess &&
+          data?.pages[0]?.data.map((val, key) => {
+            return (
+              <div
+                className="flex w-80 text-center flex-col items-center bg-gray-400/10 text-white my-8 p-6 rounded-xl"
+                key={key}
+              >
+                <Image
+                  src={val?.image_url}
+                  width="300"
+                  height="300"
+                  alt={val?.name}
+                  className="rounded-lg"
+                />
+                <h3 className="text-3xl font-bold mt-6">{val?.name}</h3>
+                <span>{val?.duration} mintues</span>
+                <Link href={`/dashboard/movies/${val?._id}`}>
+                  <button className="p-4 mt-4 max-w-fit rounded-2xl text-white font-semibold bg-gray-400/10 shadow-slate-800">
+                    Book Tickets
+                  </button>
+                </Link>
+              </div>
+            )
+          })}
+      </div>
     </div>
   )
 }

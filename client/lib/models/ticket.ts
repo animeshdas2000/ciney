@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
-const { ObjectId } = mongoose.Schema.Types;
+const { ObjectId } = mongoose.Schema.Types
 const ticketSchema = new mongoose.Schema(
   {
     id: {
@@ -12,7 +12,6 @@ const ticketSchema = new mongoose.Schema(
       required: true,
     },
     movie: {
-      // type: String,
       type: ObjectId,
       ref: "movies",
       required: true,
@@ -44,7 +43,7 @@ const ticketSchema = new mongoose.Schema(
   {
     timestamps: true,
   }
-);
+)
 
 export const Ticket =
-  mongoose.models.Tickets || mongoose.model("Tickets", ticketSchema);
+  mongoose.models.Tickets || mongoose.model("Tickets", ticketSchema)
