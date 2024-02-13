@@ -3,6 +3,7 @@ import { STATES } from "mongoose"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { io } from "socket.io-client"
+import { movie } from "../../admin"
 
 const SOCKET_LINK = process.env.SOCKET_SERVER
 //const socket = io(SOCKET_LINK || "https://frozen-thicket-24029.herokuapp.com/")
@@ -11,6 +12,7 @@ function Movie() {
   const router = useRouter()
   const { movieId } = router.query
   //const [userName, setUserName] = useState<string>("");
+  const [movie, setMovie] = useState<movie[]>()
   const [movieName, setMovieName] = useState("")
   const [movieduration, setMovieDuration] = useState(0)
   const [movie_id, setMovie_id] = useState("")
