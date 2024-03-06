@@ -1,14 +1,17 @@
-export const generateSeatLayout = () => {
-  let arr = [];
-  let row = 2;
-  for (let j = 0; j <= row; j++) {
-    for (let i = 65; i < 91; i++) {
+import { ISeat } from "./models/seat"
+
+export const generateSeatLayout = (row: number, col: number) => {
+  let arr: ISeat[] = []
+  // let row = 4
+  // let col = 4
+  for (let j = 0; j < row; j++) {
+    for (let i = 0; i < col; i++) {
       arr.push({
-        row: `${String.fromCharCode(i)}`,
+        row: i,
         col: j,
-        isBooked: false,
-      });
+        status: "AVAILABLE",
+      })
     }
   }
-  return arr;
-};
+  return arr
+}

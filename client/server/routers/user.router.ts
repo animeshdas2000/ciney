@@ -1,5 +1,5 @@
 import { z } from "zod"
-import userModel, { IUser } from "../../lib/models/user.model"
+import { IUser, User } from "../../lib/models/user.model"
 import { procedure, router } from "../trpc"
 
 const userRouter = router({
@@ -11,7 +11,7 @@ const userRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      const userModelData = await userModel().create({
+      await User.create({
         name: input.name,
         email: input.email,
         avatar: "https://hello.img",
@@ -30,12 +30,12 @@ const userRouter = router({
       })
     )
     .query(async ({ input }) => {
-      const userModelData = await userModel().findById({
+      const userModelData = await User.findById({
         _id: input.id,
       })
       return {
         success: true,
-        userData: userModelData as IUser,
+        userData: userModelData,
       }
     }),
 })

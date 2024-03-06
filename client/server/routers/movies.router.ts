@@ -57,7 +57,15 @@ const moviesRouter = router({
       }
     }),
 
-  // getMovieByID: procedure.
+  getMovieByID: procedure
+    .input(z.object({ _id: z.string() }))
+    .query(async (opts) => {
+      const movie = await Movies.findById(opts.input._id)
+      return {
+        success: true,
+        data: movie,
+      }
+    }),
 })
 
 export default moviesRouter

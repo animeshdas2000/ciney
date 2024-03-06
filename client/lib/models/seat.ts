@@ -1,4 +1,10 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
+
+export interface ISeat {
+  row: string | number
+  col: string | number
+  status: "BOOKED" | "HOLD" | "AVAILABLE"
+}
 
 const seatSchema = new mongoose.Schema({
   // id: {
@@ -13,6 +19,6 @@ const seatSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-});
+})
 
-export const Seat = mongoose.models.Seat || mongoose.model("Seat", seatSchema);
+export const Seat = mongoose.models.Seat || mongoose.model("Seat", seatSchema)

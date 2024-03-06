@@ -1,17 +1,12 @@
 import mongoose from "mongoose"
+import { ISeat } from "./seat"
 export interface IMovie {
   movie_id: string
   name: string
   duration: number
   show_time: Date[]
   image_url: string
-  seats: ISeats[]
-}
-
-interface ISeats {
-  row: string | number
-  col: string | number
-  status: "BOOKED" | "HOLD" | "AVAILABLE"
+  seats: ISeat[]
 }
 
 const MoviesSchema = new mongoose.Schema(

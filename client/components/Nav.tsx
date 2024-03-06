@@ -4,6 +4,7 @@ import Link from "next/link"
 
 function NavBar() {
   const { data: session } = useSession()
+  console.log(session)
   let authBtn
   session
     ? (authBtn = <button onClick={() => signOut()}>Sign Out</button>)
